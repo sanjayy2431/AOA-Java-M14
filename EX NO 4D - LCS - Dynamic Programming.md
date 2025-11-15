@@ -1,70 +1,71 @@
 
-# EX 4D Longest Common SubSequence - Dynamic Programming.
+# EX 4E Longest Increasing Subsequence - Dynamic Programming.
 ## DATE:15/11/25
 ## AIM:
 To write a Java program to for given constraints.
-Given two strings text1 and text2, return the length of their longest common subsequence. If there is no common subsequence, return 0.
-A subsequence of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.
-
-For example, "ace" is a subsequence of "abcde".
-A common subsequence of two strings is a subsequence that is common to both strings.
-
-Input: text1 = "abcde", text2 = "ace" 
-Output: 3  
-Explanation: The longest common subsequence is "ace" and its length is 3.
-Constraints:
-
-1 <= text1.length, text2.length <= 1000
-text1 and text2 consist of only lowercase English characters.
-
+Given an integer array nums, return the length of the longest strictly increasing subsequence.
+Example 1:
+Input: nums = [10,9,2,5,3,7,101,18]
+Output: 4
+Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
 ## Algorithm
-1.Start and read two input strings text1 and text2.
+1.Start and read the number of elements n, then input the array nums[].
 
-2.Create a 2D array dp[m+1][n+1], where m and n are the lengths of the strings.
+2.Initialize a DP array dp[] with all values as 1 (each element is an LIS of length 1).
 
-3.For each character pair (i, j), compare text1[i-1] and text2[j-1].
+3.For each element i from 1 to n-1, compare with all previous elements j < i.
 
-4.If they match, set dp[i][j] = dp[i-1][j-1] + 1; else set dp[i][j] = max(dp[i-1][j], dp[i][j-1]).
+4.If nums[i] > nums[j], update dp[i] = max(dp[i], dp[j] + 1).
 
-5.After filling the table, dp[m][n] gives the length of the Longest Common Subsequence.
-
-
+5.After filling the DP array, the maximum value in dp[] is the length of the Longest Increasing Subsequence.
+  
 
 ## Program:
 ```
 /*
 Program to implement Reverse a String
 Developed by: Sanjay V
-Register Number: 212223230188
+Register Number:  212223230188
 */
+import java.util.*;
 
-import java.util.Scanner;
+public class LongestIncreasingSubsequence {
 
-public class Solution {
-    public int longestCommonSubsequence(String text1, String text2) {
-        int m = text1.length();
-        int n = text2.length();
-        int[][] dp = new int[m + 1][n + 1];
-        for (int i = 1; i <= m; i++) {
-            for (int j = 1; j <= n; j++) {
-                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
-                    dp[i][j] = dp[i - 1][j - 1] + 1;
-                } else {
-                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-                }
-            }
-        }
-        return dp[m][n];
+    public static int lengthOfLIS(int[] nums) {
+        
+       int[] dp=new int[nums.length];
+       Arrays.fill(dp,1);
+       for(int i=1;i<nums.length;i++){
+           for(int j=0;j<i;j++){
+               if(nums[i]>nums[j]){
+                   dp[i]=Math.max(dp[i],dp[j]+1);
+               }
+           }
+       }
+       int longest=0;
+       for(int c:dp){
+           longest=Math.max(longest,c);
+       }
+       return longest;
+        
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Solution sol = new Solution();
-        String text1 = sc.nextLine().replaceAll("\"", "");
-        String text2 = sc.nextLine().replaceAll("\"", "");
-        int lcsLength = sol.longestCommonSubsequence(text1, text2);
-        System.out.println("Length of Longest Common Subsequence: " + lcsLength);
-        sc.close();
+public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Prompt user input
+        int n = scanner.nextInt();
+        int[] nums = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            nums[i] = scanner.nextInt();
+        }
+
+        // Calculate and display the length of LIS
+        int result = lengthOfLIS(nums);
+        System.out.println("Length of Longest Increasing Subsequence: " + result);
+
+        scanner.close();
     }
 }
 
@@ -72,7 +73,7 @@ public class Solution {
 
 ## Output:
 
-<img width="844" height="245" alt="image" src="https://github.com/user-attachments/assets/62e92dc5-1f0e-43f7-bd5a-3c73a331617b" />
+<img width="815" height="249" alt="image" src="https://github.com/user-attachments/assets/66bd3506-249e-4700-b247-c4ef978cd779" />
 
 
 ## Result:
